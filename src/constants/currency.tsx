@@ -1,6 +1,6 @@
-import moment from "moment";
-import {Select} from "antd";
-import React from "react";
+import React from 'react'
+// libs
+import { Select } from 'antd'
 
 export enum Currency {
   USD = 'US dollar',
@@ -38,19 +38,5 @@ export enum Currency {
   ZAR = 'South African rand'
 }
 
-export const EXCHANGE_URL = 'https://api.exchangeratesapi.io/history'
-
-export const fiveDaysAgoMoment = moment().subtract(5, 'd')
-export const todayMoment = moment()
-
-export const DATE_FORMAT = 'YYYY-MM-DD'
-export const DEFAULT_CHART_DATA = [{
-  date: todayMoment.format(DATE_FORMAT),
-  value: 1
-}]
-export const DEFAULT_FIRST_CURRENCY_STATE = 'USD'
-export const DEFAULT_SECOND_CURRENCY_STATE = 'EUR'
-export const DEFAULT_TIME_GAP_STATE = { startAt: fiveDaysAgoMoment.format(DATE_FORMAT), endAt: todayMoment.format(DATE_FORMAT) }
-
-export const SelectValues = Object.entries(Currency).map(([key, value]) =>
+export const CurrencySelectValues = Object.entries(Currency).map(([key, value]) =>
   <Select.Option key={value} value={key}>{value}</Select.Option>)

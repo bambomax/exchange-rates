@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9c1baf7b-0580-4c9f-a8c7-1c74bc0f17e8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/constants/index.tsx" afterDir="false" />
+    <list default="true" id="9c1baf7b-0580-4c9f-a8c7-1c74bc0f17e8" name="Default Changelist" comment="added logic and charts">
+      <change afterPath="$PROJECT_DIR$/src/components/Charts/LineChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Header/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Header/styles.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants/colors.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants/currency.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants/dates.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/constants/urls.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/theme/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants/index.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,10 +41,12 @@
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/Header" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
@@ -50,22 +60,51 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1593708817010</updated>
-      <workItem from="1593708822748" duration="16859000" />
+      <workItem from="1593708822748" duration="17263000" />
+      <workItem from="1593760136248" duration="17214000" />
     </task>
+    <task id="LOCAL-00001" summary="added logic and charts">
+      <created>1593737459427</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1593737459427</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added logic and charts" />
+    <option name="LAST_COMMIT_MESSAGE" value="added logic and charts" />
   </component>
   <component name="WindowStateProjectService">
     <state x="320" y="80" key="#TypeScript" timestamp="1593721051937">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="320" y="80" key="#TypeScript/0.0.1440.900@0.0.1440.900" timestamp="1593721051937" />
-    <state x="277" y="0" key="CommitChangelistDialog2" timestamp="1593737423688">
+    <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1593787481323">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="277" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1593737423688" />
+    <state x="458" y="204" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1440.900@0.0.1440.900" timestamp="1593787481323" />
+    <state x="277" y="0" key="CommitChangelistDialog2" timestamp="1593788121431">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="277" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1593788121431" />
+    <state x="147" y="79" key="DiffContextDialog" timestamp="1593788121139">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="147" y="79" key="DiffContextDialog/0.0.1440.900@0.0.1440.900" timestamp="1593788121139" />
+    <state x="320" y="171" key="Vcs.Push.Dialog.v2" timestamp="1593737553696">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="171" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1593737553696" />
+    <state x="68" y="41" width="1238" height="756" key="find.popup" timestamp="1593787682823">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="68" y="41" width="1238" height="756" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1593787682823" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1593708851041">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

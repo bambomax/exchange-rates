@@ -1,35 +1,42 @@
 import React from 'react'
 // libs
 import moment from 'moment'
-import { Layout, DatePicker, Select } from 'antd'
-import { Line } from '@ant-design/charts'
+import { Row, Col, DatePicker, Select, Typography } from 'antd'
+import { LineChart, CartesianGrid, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+// components
+import Header from './components/Header'
+// utils
+import { getRandomColor, transformFetchedData } from './utils'
 // theme
 import './App.css'
+import { Wrapper, CurrentRates } from './theme'
 // constants
-import {
-  Currency,
-  EXCHANGE_URL,
-  fiveDaysAgoMoment,
-  todayMoment,
-  DATE_FORMAT,
-  DEFAULT_CHART_DATA,
-  DEFAULT_FIRST_CURRENCY_STATE,
-  DEFAULT_SECOND_CURRENCY_STATE,
-  DEFAULT_TIME_GAP_STATE,
-  SelectValues
-} from './constants'
+import { EXCHANGE_URL } from './constants/urls'
+import { fiveDaysAgoMoment, todayMoment, DATE_FORMAT } from './constants/dates'
+import { Currency, CurrencySelectValues } from './constants/currency'
 
-interface IData {
+const DEFAULT_CHART_DATA: IChartData = []
+const DEFAULT_FIRST_CURRENCY_STATE = 'USD'
+const DEFAULT_SECOND_CURRENCY_STATE = ['EUR']
+const DEFAULT_TIME_GAP_STATE = { startAt: fiveDaysAgoMoment.format(DATE_FORMAT), endAt: todayMoment.format(DATE_FORMAT) }
+
+export interface IData {
   base: Currency
   date: string
   rates: {
-    [key: string]: {
-      [key: string]: number
+    [date: string]: {
+      [currency: string]: number
     }
   }
 }
 
-type IChartData = Array<{ date: string, value: number }>
+export type IChartDataItem = {
+  // @ts-ignore
+  date: string
+  [currency: string]: number
+}
+
+export type IChartData = Array<IChartDataItem>
 
 interface ITimeGap {
   startAt: string
@@ -43,16 +50,12 @@ let isMounted = false
 const App: React.FC = () => {
   const [chartData, setChartData] = React.useState<IChartData>(DEFAULT_CHART_DATA)
   const [first, setFirstCurrency] = React.useState<string>(DEFAULT_FIRST_CURRENCY_STATE)
-  const [second, setSecondCurrency] = React.useState<string>(DEFAULT_SECOND_CURRENCY_STATE)
+  const [second, setSecondCurrency] = React.useState<string[]>(DEFAULT_SECOND_CURRENCY_STATE)
   const [{ startAt, endAt }, setTime] = React.useState<ITimeGap>(DEFAULT_TIME_GAP_STATE)
-
-  const transformFetchedData = ({ rates }: IData): IChartData =>
-    // @ts-ignore
-    Object.entries(rates).reduce((acc, [date, { [second]: value }]) => [...acc, { date, value }], [])
 
   const fetchData = async (): Promise<void> => {
     try {
-      const response = await fetch(EXCHANGE_URL + `?base=${first}&start_at=${startAt}&end_at=${endAt}&symbols=${second}`)
+      const response = await fetch(EXCHANGE_URL + `?base=${first}&start_at=${startAt}&end_at=${endAt}&symbols=${second.join(',')}`)
       const data: IData = await response.json()
       const chartData: IChartData = transformFetchedData(data)
       setChartData(chartData)
@@ -79,37 +82,64 @@ const App: React.FC = () => {
     }
   }
 
-  const chartConfig = {
-    data: chartData,
-    xField: 'date',
-    yField: 'value',
-    padding: 'auto',
-    forceFit: true,
-    point: {
-      visible: true,
-      size: 5,
-      shape: 'diamond',
-      style: {
-        fill: 'white',
-        stroke: '#2593fc',
-        lineWidth: 2
-      }
-    }
-  }
+  const currentRatesObj = chartData.reduce((acc, item) =>
+    moment(item.date, DATE_FORMAT).isAfter(moment(acc.date)) ? item : acc, { date: '2000-01-01' })
+
+  const currentRates = Object
+    .entries(currentRatesObj)
+    .filter(([key]) => key !== 'date')
+    .map(item => item.join(' '))
+    .join(', ')
+
+  const lines = Object.entries(chartData[0] || {}).filter(([key]) => key !== 'date')
 
   return (
-    <Layout>
-      <h1>Exchange rates</h1>
-      <Select defaultValue={first} value={first} onChange={setFirstCurrency} showSearch>{SelectValues}</Select>
-      <Select defaultValue={second} value={second} onChange={setSecondCurrency} showSearch>{SelectValues}</Select>
-      <DatePicker.RangePicker
-        defaultValue={[fiveDaysAgoMoment, todayMoment]}
-        format={DATE_FORMAT}
-        onChange={onDateChange}
-      />
-      <p>{first} 1 = {second} {chartData[chartData.length - 1].value}</p>
-      <Line {...chartConfig} />
-    </Layout>
+    <>
+      <Header />
+      <Wrapper>
+        <Row gutter={[16, 16]} align='middle'>
+          <Col>
+            <Typography.Text>Select:</Typography.Text>
+          </Col>
+          <Col>
+            <Select defaultValue={first} value={first} onChange={setFirstCurrency} showSearch>{CurrencySelectValues}</Select>
+          </Col>
+          <Col>
+            <Typography.Text>vs.</Typography.Text>
+          </Col>
+          <Col>
+            <Select
+              mode='multiple'
+              defaultValue={second}
+              value={second}
+              onChange={setSecondCurrency}
+              showSearch
+            >
+              {CurrencySelectValues}
+            </Select>
+          </Col>
+        </Row>
+        <Row align='middle' style={{ marginBottom: 30 }}>
+          <Typography.Text style={{ marginRight: 16 }}>Period:</Typography.Text>
+          <DatePicker.RangePicker
+            defaultValue={[fiveDaysAgoMoment, todayMoment]}
+            format={DATE_FORMAT}
+            onChange={onDateChange}
+          />
+        </Row>
+        <CurrentRates>1 {first} = {currentRates}</CurrentRates>
+        <ResponsiveContainer width='100%' height={300}>
+          <LineChart data={chartData}>
+            <XAxis dataKey='date' />
+            <YAxis />
+            <CartesianGrid strokeDasharray='3 3' />
+            <Tooltip />
+            <Legend />
+            {lines.map(([key]) => <Line key={key} type='monotone' dataKey={key} stroke={getRandomColor()} />)}
+          </LineChart>
+        </ResponsiveContainer>
+      </Wrapper>
+    </>
   )
 }
 
