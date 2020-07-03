@@ -93,6 +93,12 @@ const App: React.FC = () => {
 
   const lines = Object.entries(chartData[0] || {}).filter(([key]) => key !== 'date')
 
+  const changeCompareCurrency = (data: string[]) => {
+    if (data.length) {
+      setSecondCurrency(data)
+    }
+  }
+
   return (
     <>
       <Header />
@@ -112,7 +118,7 @@ const App: React.FC = () => {
               mode='multiple'
               defaultValue={second}
               value={second}
-              onChange={setSecondCurrency}
+              onChange={changeCompareCurrency}
               showSearch
             >
               {CurrencySelectValues}
